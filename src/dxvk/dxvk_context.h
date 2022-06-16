@@ -1080,6 +1080,7 @@ namespace dxvk {
     DxvkContextFlags        m_flags;
     DxvkContextState        m_state;
     DxvkContextFeatures     m_features;
+    DxvkDescriptorState     m_descriptorState;
 
     DxvkBarrierSet          m_sdmaAcquires;
     DxvkBarrierSet          m_sdmaBarriers;
@@ -1088,7 +1089,7 @@ namespace dxvk {
     DxvkBarrierSet          m_execBarriers;
     DxvkBarrierSet          m_gfxBarriers;
     DxvkBarrierControlFlags m_barrierControl;
-    
+
     DxvkGpuQueryManager     m_queryManager;
     DxvkStagingBuffer       m_staging;
     
