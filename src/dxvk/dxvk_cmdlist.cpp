@@ -190,6 +190,11 @@ namespace dxvk {
     m_signalTracker.reset();
     m_statCounters.reset();
 
+    for (const auto& descriptorPools : m_descriptorPools)
+      descriptorPools.second->recycleDescriptorPool(descriptorPools.first);
+
+    m_descriptorPools.clear();
+
     m_waitSemaphores.clear();
     m_signalSemaphores.clear();
   }

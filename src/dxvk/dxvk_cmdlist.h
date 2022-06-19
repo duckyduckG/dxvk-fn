@@ -220,7 +220,7 @@ namespace dxvk {
       m_resources.notify();
       m_signalTracker.notify();
     }
-    
+
     /**
      * \brief Waits for fence
      *
@@ -803,6 +803,12 @@ namespace dxvk {
         m_vkd->device(), queryPool, queryId, 1);
     }
 
+    void trackDescriptorPool(
+      const Rc<DxvkPersistentDescriptorPool>&       pool,
+      const Rc<DxvkDescriptorManager>&    manager) {
+      m_descriptorPools.push_back({ pool, manager });
+    }
+
   private:
     
     DxvkDevice*         m_device;
@@ -832,6 +838,10 @@ namespace dxvk {
 
     std::vector<DxvkFenceValuePair> m_waitSemaphores;
     std::vector<DxvkFenceValuePair> m_signalSemaphores;
+
+    std::vector<std::pair<
+      Rc<DxvkPersistentDescriptorPool>,
+      Rc<DxvkDescriptorManager>>> m_descriptorPools;
 
     VkCommandBuffer getCmdBuffer(DxvkCmdBuffer cmdBuffer) const {
       if (cmdBuffer == DxvkCmdBuffer::ExecBuffer) return m_execBuffer;
