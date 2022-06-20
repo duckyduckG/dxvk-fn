@@ -1083,7 +1083,6 @@ namespace dxvk {
     DxvkObjects*            m_common;
     
     Rc<DxvkCommandList>     m_cmd;
-    Rc<DxvkDescriptorPool>  m_descPool;
     Rc<DxvkBuffer>          m_zeroBuffer;
 
     DxvkContextFlags        m_flags;
@@ -1343,9 +1342,6 @@ namespace dxvk {
             VkPipelineStageFlags      dstStages,
             VkAccessFlags             dstAccess);
     
-    VkDescriptorSet allocateDescriptorSet(
-            VkDescriptorSetLayout     layout);
-
     void trackDrawBuffer();
 
     bool tryInvalidateDeviceLocalBuffer(
