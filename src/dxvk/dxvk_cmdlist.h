@@ -796,7 +796,7 @@ namespace dxvk {
     }
 
     void trackDescriptorPool(
-      const Rc<DxvkPersistentDescriptorPool>&       pool,
+      const Rc<DxvkDescriptorPool>&       pool,
       const Rc<DxvkDescriptorManager>&    manager) {
       m_descriptorPools.push_back({ pool, manager });
     }
@@ -831,7 +831,7 @@ namespace dxvk {
     std::vector<DxvkFenceValuePair> m_signalSemaphores;
 
     std::vector<std::pair<
-      Rc<DxvkPersistentDescriptorPool>,
+      Rc<DxvkDescriptorPool>,
       Rc<DxvkDescriptorManager>>> m_descriptorPools;
 
     VkCommandBuffer getCmdBuffer(DxvkCmdBuffer cmdBuffer) const {
