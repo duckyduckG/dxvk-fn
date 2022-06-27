@@ -4281,7 +4281,7 @@ namespace dxvk {
           } break;
 
           default:
-            Logger::err(str::format("DxvkContext: Unhandled descriptor type: ", binding.descriptorType));
+            break;
         }
 
         k += 1;
