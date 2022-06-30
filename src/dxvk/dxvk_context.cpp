@@ -3963,7 +3963,6 @@ namespace dxvk {
       return false;
 
     m_descriptorState.dirtyStages(VK_SHADER_STAGE_COMPUTE_BIT);
-    m_state.cp.state.bsBindingMask.clear();
 
     if (m_state.cp.pipeline->getBindings()->layout().getPushConstantRange().size)
       m_flags.set(DxvkContextFlag::DirtyPushConstants);
@@ -4033,7 +4032,6 @@ namespace dxvk {
     }
 
     m_descriptorState.dirtyStages(VK_SHADER_STAGE_ALL_GRAPHICS);
-    m_state.gp.state.bsBindingMask.clear();
 
     if (newPipeline->getBindings()->layout().getPushConstantRange().size)
       m_flags.set(DxvkContextFlag::DirtyPushConstants);
@@ -4104,15 +4102,7 @@ namespace dxvk {
     // For 64-bit applications, using templates is slower on some drivers.
     constexpr bool useDescriptorTemplates = env::is32BitHostPlatform();
 
-    // This relies on the bind mask being cleared when the pipeline layout changes.
-    DxvkBindingMask& refBindMask = BindPoint == VK_PIPELINE_BIND_POINT_GRAPHICS
-      ? m_state.gp.state.bsBindingMask
-      : m_state.cp.state.bsBindingMask;
-
-    DxvkBindingMask newBindMask = refBindMask;
-
     uint32_t layoutSetMask = layout->getSetMask();
-
     uint32_t dirtySetMask = BindPoint == VK_PIPELINE_BIND_POINT_GRAPHICS
       ? m_descriptorState.getDirtyGraphicsSets()
       : m_descriptorState.getDirtyComputeSets();
@@ -4129,11 +4119,7 @@ namespace dxvk {
 
       // Initialize binding mask for the current set, only
       // clear bits if certain resources are actually unbound.
-      uint32_t bindingIndex = layout->getFirstBinding(setIndex);
       uint32_t bindingCount = bindings.getBindingCount(setIndex);
-
-      newBindMask.setRange(bindingIndex, bindingCount);
-
       VkDescriptorSet set = sets[setIndex];
 
       for (uint32_t j = 0; j < bindingCount; j++) {
@@ -4175,7 +4161,6 @@ namespace dxvk {
               }
             } else {
               m_descriptors[k].image = VkDescriptorImageInfo();
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4193,7 +4178,6 @@ namespace dxvk {
               }
             } else {
               m_descriptors[k].image = VkDescriptorImageInfo();
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4213,7 +4197,6 @@ namespace dxvk {
               }
             } else {
               m_descriptors[k].image = m_common->dummyResources().samplerDescriptor();
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4230,7 +4213,6 @@ namespace dxvk {
               }
             } else {
               m_descriptors[k].texelBuffer = VK_NULL_HANDLE;
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4247,7 +4229,6 @@ namespace dxvk {
               }
             } else {
               m_descriptors[k].texelBuffer = VK_NULL_HANDLE;
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4274,7 +4255,6 @@ namespace dxvk {
                 m_cmd->trackResource<DxvkAccess::Write>(res.bufferSlice.buffer());
             } else {
               m_descriptors[k].buffer = VkDescriptorBufferInfo();
-              newBindMask.clr(bindingIndex + j);
             }
           } break;
 
@@ -4312,15 +4292,6 @@ namespace dxvk {
       }
 
       dirtySetMask &= dirtySetMask - 1;
-    }
-
-    // Update pipeline if there are unbound resources
-    if (refBindMask != newBindMask) {
-      refBindMask = newBindMask;
-
-      m_flags.set(BindPoint == VK_PIPELINE_BIND_POINT_GRAPHICS
-        ? DxvkContextFlag::GpDirtyPipelineState
-        : DxvkContextFlag::CpDirtyPipelineState);
     }
   }
 
