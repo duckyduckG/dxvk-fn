@@ -3753,8 +3753,6 @@ namespace dxvk {
 
       m_flags.clr(DxvkContextFlag::GpRenderPassSuspended);
 
-      m_execBarriers.recordCommands(m_cmd);
-
       this->renderPassBindFramebuffer(
         m_state.om.framebufferInfo,
         m_state.om.renderPassOps,
