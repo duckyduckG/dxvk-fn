@@ -4694,14 +4694,14 @@ namespace dxvk {
         return false;
     }
     
-    if (m_descriptorState.hasDirtyComputeSets())
-      this->updateComputeShaderResources();
-
     if (m_flags.test(DxvkContextFlag::CpDirtyPipelineState)) {
       if (unlikely(!this->updateComputePipelineState()))
         return false;
     }
     
+    if (m_descriptorState.hasDirtyComputeSets())
+      this->updateComputeShaderResources();
+
     if (m_flags.test(DxvkContextFlag::DirtyPushConstants))
       this->updatePushConstants<VK_PIPELINE_BIND_POINT_COMPUTE>();
 
@@ -4736,13 +4736,13 @@ namespace dxvk {
     if (m_flags.test(DxvkContextFlag::GpDirtyVertexBuffers))
       this->updateVertexBufferBindings();
     
-    if (m_descriptorState.hasDirtyGraphicsSets())
-      this->updateGraphicsShaderResources();
-    
     if (m_flags.test(DxvkContextFlag::GpDirtyPipelineState)) {
       if (unlikely(!this->updateGraphicsPipelineState()))
         return false;
     }
+    
+    if (m_descriptorState.hasDirtyGraphicsSets())
+      this->updateGraphicsShaderResources();
     
     if (m_state.gp.flags.test(DxvkGraphicsPipelineFlag::HasTransformFeedback))
       this->updateTransformFeedbackState();
