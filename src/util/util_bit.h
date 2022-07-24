@@ -70,7 +70,8 @@ namespace dxvk::bit {
       "test  %2, %2;"
       "cmovz %1, %0;"
       : "=&r" (res), "=&r" (tmp)
-      : "r" (n));
+      : "r" (n)
+      : "cc");
     return res;
     #else
     uint32_t r = 31;
@@ -98,7 +99,8 @@ namespace dxvk::bit {
       "test  %2, %2;"
       "cmovz %1, %0;"
       : "=&r" (res), "=&r" (tmp)
-      : "r" (n));
+      : "r" (n)
+      : "cc");
     return res;
     #else
     uint32_t lo = uint32_t(n);
