@@ -892,12 +892,10 @@ namespace dxvk {
       ENABLE_FEATURE(core.features, wideLines, false),
 
       ENABLE_FEATURE(vk11, shaderDrawParameters, true),
-      ENABLE_FEATURE(vk11, storageBuffer16BitAccess, true),
       ENABLE_FEATURE(vk11, storagePushConstant16, false),
 
       ENABLE_FEATURE(vk12, bufferDeviceAddress, true),
       ENABLE_FEATURE(vk12, descriptorIndexing, true),
-      ENABLE_FEATURE(vk12, storageBuffer8BitAccess, true),
       ENABLE_FEATURE(vk12, storagePushConstant8, false),
       ENABLE_FEATURE(vk12, shaderUniformTexelBufferArrayDynamicIndexing, false),
       ENABLE_FEATURE(vk12, shaderStorageTexelBufferArrayDynamicIndexing, false),
@@ -1057,12 +1055,14 @@ namespace dxvk {
       ENABLE_EXT(khrIncrementalPresent, false),
 
       /* LOAD_OP_NONE for certain tiler optimizations. Core feature
-       * in Vulkan 1.4, so probably supported by everything we need. */
-      ENABLE_EXT(khrLoadStoreOpNone, true),
+       * in Vulkan 1.4, so probably supported by everything we need.
+       * Adreno6xx: Optional
+       */
+      ENABLE_EXT(khrLoadStoreOpNone, false),
 
       /* Maintenance features, relied on in various parts of the code */
-      ENABLE_EXT_FEATURE(khrMaintenance5, maintenance5, true),
-      ENABLE_EXT_FEATURE(khrMaintenance6, maintenance6, true),
+      ENABLE_EXT_FEATURE(khrMaintenance5, maintenance5, false), // Adreno6xx: Optional
+      ENABLE_EXT_FEATURE(khrMaintenance6, maintenance6, false), // Adreno6xx: Optional
       ENABLE_EXT_FEATURE(khrMaintenance7, maintenance7, false),
       ENABLE_EXT_FEATURE(khrMaintenance8, maintenance8, false),
       ENABLE_EXT_FEATURE(khrMaintenance9, maintenance9, false),

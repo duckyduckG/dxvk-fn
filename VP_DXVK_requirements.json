@@ -75,9 +75,6 @@
         },
         "dxvk_common_required": {
             "extensions": {
-                "VK_KHR_load_store_op_none": 1,
-                "VK_KHR_maintenance5": 1,
-                "VK_KHR_maintenance6": 1,
                 "VK_EXT_depth_clip_enable": 1,
                 "VK_EXT_robustness2": 1
             },
@@ -89,23 +86,15 @@
                     "shaderSampledImageArrayDynamicIndexing" : true
                 },
                 "VkPhysicalDeviceVulkan11Features": {
-                    "storageBuffer16BitAccess": true,
                     "shaderDrawParameters": true
                 },
                 "VkPhysicalDeviceVulkan12Features": {
-                    "storageBuffer8BitAccess": true,
                     "shaderInt8": true,
                     "descriptorIndexing" : true,
                     "descriptorBindingSampledImageUpdateAfterBind" : true,
                     "descriptorBindingUpdateUnusedWhilePending" : true,
                     "descriptorBindingPartiallyBound" : true,
                     "runtimeDescriptorArray" : true
-                },
-                "VkPhysicalDeviceMaintenance5FeaturesKHR": {
-                    "maintenance5": true
-                },
-                "VkPhysicalDeviceMaintenance6FeaturesKHR": {
-                    "maintenance6": true
                 },
                 "VkPhysicalDeviceRobustness2FeaturesEXT": {
                     "nullDescriptor": true,
@@ -127,6 +116,9 @@
             "extensions": {
                 "VK_KHR_calibrated_timestamps": 1,
                 "VK_KHR_incremental_present": 1,
+                "VK_KHR_load_store_op_none": 1,
+                "VK_KHR_maintenance5": 1,
+                "VK_KHR_maintenance6": 1,
                 "VK_KHR_maintenance7": 1,
                 "VK_KHR_maintenance8": 1,
                 "VK_KHR_maintenance9": 1,
@@ -149,6 +141,12 @@
                 "VkPhysicalDeviceFeatures": {
                     "largePoints": true,
                     "wideLines": true
+                },
+                "VkPhysicalDeviceMaintenance5FeaturesKHR": {
+                    "maintenance5": true
+                },
+                "VkPhysicalDeviceMaintenance6FeaturesKHR": {
+                    "maintenance6": true
                 },
                 "VkPhysicalDeviceVulkan11Features": {
                     "storagePushConstant16": true
@@ -305,7 +303,11 @@
                     "shaderImageGatherExtended": true,
                     "textureCompressionBC": true
                 },
+                "VkPhysicalDeviceVulkan11Features": {
+                    "storageBuffer16BitAccess": true,
+                },
                 "VkPhysicalDeviceVulkan12Features": {
+                    "storageBuffer8BitAccess": true,
                     "samplerMirrorClampToEdge": true
                 },
                 "VkPhysicalDeviceTransformFeedbackFeaturesEXT": {

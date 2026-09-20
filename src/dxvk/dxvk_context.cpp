@@ -2042,7 +2042,8 @@ namespace dxvk {
           VkImageAspectFlags        discardAspects,
           VkImageAspectFlags        clearAspects,
           VkClearValue              clearValue) {
-    bool hasLoadOpNone = m_device->properties().khrMaintenance7.separateDepthStencilAttachmentAccess;
+    bool hasLoadOpNone = m_device->features().khrLoadStoreOpNone &&
+      m_device->properties().khrMaintenance7.separateDepthStencilAttachmentAccess;
 
     DxvkColorAttachmentOps colorOp;
     colorOp.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
@@ -2690,7 +2691,11 @@ namespace dxvk {
     if (access == DxvkAccess::None) {
       // If the attachment is not accessed at all, we can set both the
       // load and store op to NONE if supported by the implementation.
-      attachment.loadOp = VK_ATTACHMENT_LOAD_OP_NONE;
+      bool hasLoadOpNone = m_device->features().khrLoadStoreOpNone;
+
+      attachment.loadOp = hasLoadOpNone
+        ? VK_ATTACHMENT_LOAD_OP_NONE
+        : VK_ATTACHMENT_LOAD_OP_LOAD;
       attachment.storeOp = VK_ATTACHMENT_STORE_OP_NONE;
     } else if (access == DxvkAccess::Read) {
       // Unlike clears, we don't treat DONT_CARE as a write. If the
@@ -4221,7 +4226,8 @@ namespace dxvk {
           renderingInfo.pStencilAttachment = &stencilInfo;
 
         if (imageView->info().aspects != aspect) {
-          if (m_device->properties().khrMaintenance7.separateDepthStencilAttachmentAccess) {
+          if (m_device->properties().khrMaintenance7.separateDepthStencilAttachmentAccess
+           && m_device->features().khrLoadStoreOpNone) {
             if (!(aspect & VK_IMAGE_ASPECT_DEPTH_BIT)) {
               attachmentInfo.loadOp = VK_ATTACHMENT_LOAD_OP_NONE;
               attachmentInfo.storeOp = VK_ATTACHMENT_STORE_OP_NONE;
